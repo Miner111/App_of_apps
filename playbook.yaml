@@ -1,0 +1,46 @@
+- name: Instalacja i konfig aplikacji
+  
+  hosts: all
+  become: true
+  vars:
+    deployment_path: "/home/ubuntu/app"
+    compose_path: ./docker-compose.yaml
+  roles:
+    - geerlingguy.docker
+
+  tasks:
+    - name: Aktualizacja apt-get i pamięci podręcznej
+      apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+
+    - name: Instalacja pakietow
+      package:
+        name: 
+          - python3-pip
+        state: present
+
+    - name: Instalacja modułow 
+      pip:
+        name: 
+          - docker<7.0
+          - docker-compose
+          - requests==2.31.0
+
+    - name: Utworzenie katalogu deployment path
+      file:
+        path: "{{ deployment_path }}"
+        state: directory
+        mode: '0755'
+
+    - name: Kopiowanie pliku docker-compose.yaml
+      ansible.builtin.copy:
+        src: "{{ compose_path }}"
+        dest: "{{ deployment_path }}"
+        
+    - name: Uruchomienie docker-compose ze zmiennymi
+      become: true
+      docker_compose:
+        project_src: "{{ deployment_path }}"
+
+      environment:
+        FRONTEND_IMAGE: "{{ lookup('env','FRONTEND_IMAGE') }}"
+        BACKEND_IMAGE:  "{{ lookup('env','BACKEND_IMAGE') }}"
