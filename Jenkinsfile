@@ -22,6 +22,23 @@ pipeline {
                 }
             }
         }
+        stage("sprzątanie kontenerów") {
+            steps {
+                script {
+                    sh "rm -f $(docker image ls -a)"
+                }
 
+            }
+        }
+        stage('Deploy application') {
+            steps {
+                script {
+                    withEnv(["FRONTEND_IMAGE=$frontendImage:$frontendDockerTag", 
+                             "BACKEND_IMAGE=$backendImage:$backendDockerTag"]) {
+                            sh "docker-compose up -d"
+                    }
+                }
+            }
+        }
     }
 }
