@@ -1,13 +1,13 @@
-def frontendImage = "miner111/pandacore/frontend_v1"
-def backendImage = "miner111/pandacore/backend_v1"
+def frontendImage = "miner111/pandacore"
+def backendImage = "miner111/pandacore"
 
 pipeline {
     agent {
         label 'agent'
     }
     parameters {
-        string defaultValue: 'latest', name: 'backendDockerTag'
-        string defaultValue: 'latest', name: 'frontendDockerTag'            
+        string defaultValue: 'backend_v1', name: 'backendDockerTag'
+        string defaultValue: 'frontend_v1', name: 'frontendDockerTag'            
     }
     stages {
         stage('pobierz kod') {
