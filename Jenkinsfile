@@ -42,7 +42,7 @@ pipeline {
         }
         stage('Testy selenium') {
             steps {
-                sh "pip3 install -r test/selenium/requirements.yaml"
+                sh "pip3 install -r test/selenium/requirements.txt"
                 sh "python3 -m pytest test/selenium/frontendTest.py"
             }
         }
