@@ -15,5 +15,13 @@ pipeline {
                 checkout scm
             }
         }
+        stage('wskaznik wersji') {
+            steps {
+                script{
+                    currentBuild.description = "Backend: ${backendDockerTag}, Frontend: ${frontendDockerTag}"
+                }
+            }
+        }
+
     }
 }
