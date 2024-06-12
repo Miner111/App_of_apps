@@ -24,7 +24,7 @@ pipeline {
         }
         stage("sprzątanie kontenerów") {
             steps {
-                sh 'rm -f $(docker image ls -a)'
+                sh 'docker rm -f frontend backend'
             }
         }
         stage('Deploy application') {
