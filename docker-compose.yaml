@@ -2,7 +2,7 @@ version: '2.4'
 
 services:
   
-  frondend:
+  frontend:
     image: ${FRONTEND_IMAGE}
     container_name: frontend
     ports:
