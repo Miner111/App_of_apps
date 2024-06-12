@@ -24,10 +24,7 @@ pipeline {
         }
         stage("sprzątanie kontenerów") {
             steps {
-                script {
-                    sh "rm -f $(docker image ls -a)"
-                }
-
+                sh 'rm -f $(docker image ls -a)'
             }
         }
         stage('Deploy application') {
