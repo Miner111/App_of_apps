@@ -3,3 +3,4 @@ pytest
 flask<2.0
 markupsafe==2.0.1
 jinja2<3.0
+jinja2>3.0
