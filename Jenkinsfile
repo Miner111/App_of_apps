@@ -5,6 +5,12 @@ pipeline {
     agent {
         label 'agent'
     }
+    environment {
+        PIP_BREAK_SYSTEM_PACKAGES = 1
+    }
+    tools {
+        terraform 'Terraform'
+    }
     parameters {
         string defaultValue: 'backend_v1', name: 'backendDockerTag'
         string defaultValue: 'frontend_v1', name: 'frontendDockerTag'            
@@ -44,6 +50,18 @@ pipeline {
             steps {
                 sh "pip3 install -r requirements.txt"
                 sh "python3 -m pytest test/selenium/frontendTest.py"
+            }
+        }
+        stage('Uruchom Terraform') {
+            steps {
+                dir('Terraform') {                
+                    git branch: 'main', url: 'https://github.com/Miner111/Terraform.git'
+                    withAWS(credentials:'AWS', region: 'us-east-1') {
+                            sh 'terraform init -backend-config=bucket=jan-jasiewicz-panda-devops-core-18'
+                            sh 'terraform apply -auto-approve -var bucket_name=jan-jasiewicz-panda-devops-core-18'
+                            
+                    } 
+                }
             }
         }
     }
