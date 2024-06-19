@@ -68,7 +68,7 @@ pipeline {
                         sh "ansible-galaxy install -r requirements.yaml"
                         withEnv(["FRONTEND_IMAGE=$frontendImage:$frontendDockerTag", 
                                  "BACKEND_IMAGE=$backendImage:$backendDockerTag"]) {
-                            ansiblePlaybook inventory: 'inventory', playbook: 'playbook.yml'
+                            ansiblePlaybook inventory: 'inventory', playbook: 'playbook.yaml'
                         }
                 }
             }
